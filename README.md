@@ -23,8 +23,26 @@ Project uses both published (Syntax API) and prototype API (CFG API), because CF
 ## TODO
 
 - [ ] Conditional build with Roslyn locally linked vs myget linking
+- [ ] Handle sub-regions
+- [ ] Init implementation of abstract interpretation
 
-  
+### Otázky
+
+- [ ] V rámci abstraktní interpretace se volá Merge vždy, když dojde ke změně stavu, nebo jen na začátku BB? Má tedy svaz mít dvě funkce - merge a update?
+
+  ```c#
+  var a = default(string); //UNKNOWN
+  a = "a";				//NEVER_NULL
+  a = null;				//Merge (NEVER_NULL, ALWAYS_NULL) -> SOMETIMES_NULl ???
+  a = "b";				//SOMETIMES_NULL	
+  if (a != null) 			 //a není null, ale pokud používáme merge -> SOMETIMES_NULL
+  ```
+
+- [ ] Je svaz navrhnutý správně?
+
+- [ ] Blok zařadím do fronty jen pokud by jeho vstupní stav byl jiný, než posledně (viz cache stavů)? 
+
+- [ ] Když začnu interpretovat blok, je počáteční stav při jeho interpretaci ten z uložení do fronty, nebo ten z cache (nebo budou vždy stejné a do fronty stačí ukládat BB bez počátečního stavu)?
 
 ## Resources
 
