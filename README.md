@@ -6,9 +6,11 @@
 
 Project uses both published (Syntax API) and prototype API (CFG API), because CFG APIs are not yet published, this projects depends on dev (nightly) or custom (local) builds of roslyn.
 
- [Syntax API](Roslyn_syntax_API.md) contains simple description of the public API
+[Syntax API](Roslyn_syntax_API.md) contains simple description of the public API
 
 [Control Flow Graph API](Roslyn_CFG_API.md)  has my notes written when exploring the current state of CFG APIs in Roslyn.
+
+[Samples](Samples.md) - samples of CFG/IOperations exposed by Roslyn APIs
 
 #### Other docs (maybe blogsposts in the future)
 
