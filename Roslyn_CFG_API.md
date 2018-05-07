@@ -1,4 +1,4 @@
-## Data Flow API
+## Control Flow Graph API
 
 Repository with source code:  https://github.com/dotnet/roslyn/blob/features/dataflow
 
