@@ -1,12 +1,12 @@
 ﻿using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Operations;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoslynTest
+namespace NullCheckElim.App
 {
     class EvaluatedRegion<TLattice, TENum>
         where TLattice : ILattice<TENum>, new()
@@ -21,7 +21,7 @@ namespace RoslynTest
             Symbols = symbols;
         }
 
-        public static EvaluatedRegion<TLattice, TENum> CreateFromRegion(ControlFlowGraph.Region region)
+        public static EvaluatedRegion<TLattice, TENum> CreateFromRegion(ControlFlowRegion region)
         {
 
             var symbols = region.Locals

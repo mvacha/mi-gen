@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RoslynTest")]
+[assembly: AssemblyTitle("NullCheckElim.App")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RoslynTest")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyProduct("NullCheckElim.App")]
+[assembly: AssemblyCopyright("Copyright ©  2018 Michal Vácha")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

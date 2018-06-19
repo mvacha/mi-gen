@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27520.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoslynTest", "RoslynTest\RoslynTest.csproj", "{B7F5FEC4-24F8-40B3-A39D-6DD777AA6A10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NullCheckElim.App", "NullCheckElim.App\NullCheckElim.App.csproj", "{B7F5FEC4-24F8-40B3-A39D-6DD777AA6A10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

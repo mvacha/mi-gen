@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoslynTest
+namespace NullCheckElim.App
 {
     public static class Extensions
     {

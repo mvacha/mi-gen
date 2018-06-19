@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoslynTest
+namespace NullCheckElim.App
 {
     interface ILattice<TEnum> where TEnum : Enum
     {

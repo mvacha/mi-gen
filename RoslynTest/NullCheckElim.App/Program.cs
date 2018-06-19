@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.CodeAnalysis.Test.Utilities;
@@ -11,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoslynTest
+namespace NullCheckElim.App
 {
     class Program
     {
@@ -113,8 +114,7 @@ namespace RoslynTest
             //var operStr = OperationTreeVerifier.GetOperationTree(compilation, firstBlockOper);
 
             //todo: SemanticModel.GetControlFlowGraph(IOperation rootOperation)
-            var cfg = SemanticModel.GetControlFlowGraph(firstBlockOper);
-
+            var cfg = ControlFlowGraph.Create(firstBlockOper.Parent as IMethodBodyOperation);
             //TODO: #ifdef ROSLYN-LOCAL
             var cfgPrettyPrint =  ControlFlowGraphVerifier.GetFlowGraph(compilation, cfg);
 

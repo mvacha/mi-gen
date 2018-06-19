@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoslynTest
+namespace NullCheckElim.App
 {
     //Interprets operations inside BasicBlocks
     class NullOperationsInterpreter : OperationVisitor
