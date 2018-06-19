@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NullCheckElim.App
+namespace NullCheckElim
 {
     //Interprets operations inside BasicBlocks
     class NullOperationsInterpreter : OperationVisitor

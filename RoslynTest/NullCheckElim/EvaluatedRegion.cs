@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NullCheckElim.App
+namespace NullCheckElim
 {
     class EvaluatedRegion<TLattice, TENum>
         where TLattice : ILattice<TENum>, new()

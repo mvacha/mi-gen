@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NullCheckElim.App
+namespace NullCheckElim
 {
     public static class Extensions
     {
