@@ -57,7 +57,7 @@ namespace NullCheckElim
             //TODO: support other than local references
             var target = operation.Target as ILocalReferenceOperation;
 
-            if (!target.Type.IsReferenceType) //TODO: handle Nullable<T> struct
+            if (!target.Type.IsNullable())
                 return;
 
             var targetEval = CurrentEval[target.Local];

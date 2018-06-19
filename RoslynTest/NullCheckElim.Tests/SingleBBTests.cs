@@ -120,5 +120,15 @@ namespace NullCheckElim.Tests
             symbols["str"].ShouldBeEqualTo(NullLatticeValue.NotNull);
             symbols["abc"].ShouldBeEqualTo(NullLatticeValue.NotNull);
         }
+
+        [TestMethod]
+        public void ShouldHandleNullableType()
+        {
+            var code = "int? i = null;";
+            TestSingleVar(code, NullLatticeValue.Null);
+
+            code = "int? i = 10;";
+            TestSingleVar(code, NullLatticeValue.NotNull);
+        }
     }
 }

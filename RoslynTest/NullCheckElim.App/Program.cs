@@ -82,6 +82,9 @@ namespace NullCheckElim.App
                 }
             }";
 
+            const string a = "10";
+            var b = a;
+
             var compilation = Compile(source5);
             var cfg = GetTreeCFG(compilation);
 

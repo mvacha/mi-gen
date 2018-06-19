@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -11,5 +12,8 @@ namespace NullCheckElim
     {
         public static ReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue> (this IDictionary<TKey, TValue> dictionary)
             => new ReadOnlyDictionary<TKey, TValue>(dictionary);
+
+        public static bool IsNullable(this ITypeSymbol type)
+            => type.IsReferenceType || type.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;
     }
 }
