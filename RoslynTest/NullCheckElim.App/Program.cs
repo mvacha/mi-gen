@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.Operations;
 using Microsoft.CodeAnalysis.Test.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NullCheckElim.App
@@ -71,6 +72,12 @@ namespace NullCheckElim.App
                 }
             }";
 
+            var source5 = @"
+{
+    var a = 10;
+}
+";
+
 
             CompileAndPrintCFG(source4);
 
@@ -93,6 +100,9 @@ namespace NullCheckElim.App
             var compilation = CSharpCompilation.Create("MyCompilation",
                 syntaxTrees: new[] { tree }, references: new[] { mscorlib });
 
+            //Assert successful compilation
+            Debug.Assert(!tree.GetRoot().HasErrors());
+
             return (compilation, tree);
         }
 
@@ -101,22 +111,17 @@ namespace NullCheckElim.App
             (var compilation, var tree) = Compile(code);
 
             var root = tree.GetRoot();
+
             var semanticModel = compilation.GetSemanticModel(tree);
-            var firstBlock = root.DescendantNodes().OfType<BlockSyntax>().First();
+            var firstMethod = root.DescendantNodes().OfType<BaseMethodDeclarationSyntax>().First();
+            var firstMethodOper = semanticModel.GetOperation(firstMethod) as IMethodBodyOperation;
 
-            var firstBlockOper = semanticModel.GetOperation(firstBlock) as IBlockOperation;
+            var cfg = ControlFlowGraph.Create(firstMethodOper);
 
-            //TODO: #ifdef ROSLYN-LOCAL
-            //var operStr = OperationTreeVerifier.GetOperationTree(compilation, firstBlockOper);
-
-            //todo: SemanticModel.GetControlFlowGraph(IOperation rootOperation)
-            var cfg = ControlFlowGraph.Create(firstBlockOper.Parent as IMethodBodyOperation);
             //TODO: #ifdef ROSLYN-LOCAL
             var cfgPrettyPrint =  ControlFlowGraphVerifier.GetFlowGraph(compilation, cfg);
 
-
-            var region = EvaluatedRegion<NullLattice, NullLaticeValue>.CreateFromRegion(cfg.Root);
-
+            var rootRegion = EvaluatedRegion<NullLattice, NullLaticeValue>.CreateFromRegion(cfg.Root);
 
             Console.WriteLine(cfgPrettyPrint);
             Console.WriteLine();
