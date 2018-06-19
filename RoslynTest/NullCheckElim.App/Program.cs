@@ -72,14 +72,21 @@ namespace NullCheckElim.App
                 }
             }";
 
+            //region test
             var source5 = @"
-{
-    var a = 10;
-}
-";
+            class Program{
+                int Main()
+                {
+                    var str = new string('a', 10);
+                    var d = DateTime.Now;
+                }
+            }";
 
+            var compilation = Compile(source5);
+            var cfg = GetTreeCFG(compilation);
 
-            CompileAndPrintCFG(source4);
+            PrettyPrintCFG(compilation);
+            TestAbstractImplementation(GetTreeCFG(compilation));
 
 #if DEBUG
             Console.ReadKey();
@@ -87,28 +94,30 @@ namespace NullCheckElim.App
 
         }
    
-        static (Compilation compilation, SyntaxTree tree) Compile(string code)
+        static Compilation Compile(string code)
         {
-            var tree = CSharpSyntaxTree.ParseText(code);
+            var parserOptions = new CSharpParseOptions(languageVersion: LanguageVersion.CSharp7);
+            var parsedTree = CSharpSyntaxTree.ParseText(code, options: parserOptions);
+
+            //Assert parser success
+            Debug.Assert(!parsedTree.GetRoot().HasErrors());
 
             //Enable flow-analysis feature flag
-            var options = tree.Options.WithFeatures(new[] { new KeyValuePair<string, string>("flow-analysis", "true") });
-            tree = tree.WithRootAndOptions(tree.GetRoot(), options);
+            var options = parsedTree.Options.WithFeatures(new[] { new KeyValuePair<string, string>("flow-analysis", "true") });
+            parsedTree = parsedTree.WithRootAndOptions(parsedTree.GetRoot(), options);
 
-            //add ref to mscor.lib
+            //Compile and link with. mscorlib.dll
             var mscorlib = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
             var compilation = CSharpCompilation.Create("MyCompilation",
-                syntaxTrees: new[] { tree }, references: new[] { mscorlib });
+                syntaxTrees: new[] { parsedTree }, 
+                references: new[] { mscorlib });
 
-            //Assert successful compilation
-            Debug.Assert(!tree.GetRoot().HasErrors());
-
-            return (compilation, tree);
+            return compilation;
         }
 
-        static void CompileAndPrintCFG(string code)
+        static ControlFlowGraph GetTreeCFG(Compilation compilation)
         {
-            (var compilation, var tree) = Compile(code);
+            var tree = compilation.SyntaxTrees.Single();
 
             var root = tree.GetRoot();
 
@@ -116,15 +125,32 @@ namespace NullCheckElim.App
             var firstMethod = root.DescendantNodes().OfType<BaseMethodDeclarationSyntax>().First();
             var firstMethodOper = semanticModel.GetOperation(firstMethod) as IMethodBodyOperation;
 
-            var cfg = ControlFlowGraph.Create(firstMethodOper);
+            return ControlFlowGraph.Create(firstMethodOper);
+        }
 
+        static void PrettyPrintCFG(Compilation compilation)
+        {
+            var cfg = GetTreeCFG(compilation);
+            
             //TODO: #ifdef ROSLYN-LOCAL
-            var cfgPrettyPrint =  ControlFlowGraphVerifier.GetFlowGraph(compilation, cfg);
-
-            var rootRegion = EvaluatedRegion<NullLattice, NullLaticeValue>.CreateFromRegion(cfg.Root);
+            var cfgPrettyPrint = ControlFlowGraphVerifier.GetFlowGraph(compilation, cfg);
 
             Console.WriteLine(cfgPrettyPrint);
             Console.WriteLine();
+        }
+
+        static void TestAbstractImplementation(ControlFlowGraph cfg)
+        {
+            var mainBB = cfg.Blocks.Single(bb => bb.Kind == BasicBlockKind.Block);
+            var mainRegion = mainBB.EnclosingRegion;
+
+            var mainEvalRegion = EvaluatedRegion<NullLattice, NullLatticeValue>.CreateFromRegion(cfg.Root.NestedRegions[0]);
+
+            var analysis = new NullCheckElimination();
+            analysis.InterpretBB(mainBB, mainEvalRegion);
+
+            //Nested regions not yet supported
+            Debug.Assert(cfg.Root.NestedRegions.Count() == 1);
         }
     }
 }

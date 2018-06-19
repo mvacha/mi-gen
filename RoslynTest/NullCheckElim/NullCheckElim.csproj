@@ -167,11 +167,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractInterpretation.cs" />
-    <Compile Include="EvaluatedRegion.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="NullLattice.cs" />
-    <Compile Include="NullOperationsInterpreter.cs" />
+    <Compile Include="AbstractInterpretation\AbstractInterpretation.cs" />
+    <Compile Include="AbstractInterpretation\EvaluatedRegion.cs" />
+    <Compile Include="Code\Extensions.cs" />
+    <Compile Include="AbstractInterpretation\ILattice.cs" />
+    <Compile Include="AbstractInterpretation\BaseOperationsInterpreter.cs" />
+    <Compile Include="NullElimination\NullLattice.cs" />
+    <Compile Include="NullElimination\NullOperationsInterpreter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
