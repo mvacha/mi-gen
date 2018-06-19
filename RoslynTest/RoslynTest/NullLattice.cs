@@ -6,20 +6,20 @@ using System.Threading.Tasks;
 
 namespace RoslynTest
 {
-    interface ILattice<TEnum> where TEnum : struct
+    interface ILattice<TEnum> where TEnum : Enum
     {
         TEnum Value { get; }
-
         //Returns true if Value has changed
         bool MergeWith(TEnum newValue);
+        void Update(TEnum newValue);
     }
 
 
     enum NullLaticeValue
     {
         Unknown = 0,
-        NeverNull = 1,
-        AlwaysNull = 2,
+        NotNull = 1,
+        Null = 2,
         SometimesNull = 10,
     }
 
@@ -42,8 +42,8 @@ namespace RoslynTest
                     return true;
 
                 //Merge with "neighbor" and move upwards
-                case NullLaticeValue.NeverNull when Value == NullLaticeValue.AlwaysNull:
-                case NullLaticeValue.AlwaysNull when Value == NullLaticeValue.NeverNull:
+                case NullLaticeValue.NotNull when Value == NullLaticeValue.Null:
+                case NullLaticeValue.Null when Value == NullLaticeValue.NotNull:
 
                 //Merge with supremum and move upwards
                 case NullLaticeValue.SometimesNull when Value != NullLaticeValue.SometimesNull:
@@ -58,5 +58,8 @@ namespace RoslynTest
             }
 
         }
+
+        public void Update(NullLaticeValue newValue)
+            => _value = newValue;
     }
 }

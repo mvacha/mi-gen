@@ -10,7 +10,7 @@ namespace RoslynTest
 {
     class EvaluatedRegion<TLattice, TENum>
         where TLattice : ILattice<TENum>, new()
-        where TENum : struct
+        where TENum : Enum
     {
         //TODO: Handle nested regions
 

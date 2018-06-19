@@ -112,6 +112,7 @@ namespace RoslynTest
             //TODO: #ifdef ROSLYN-LOCAL
             //var operStr = OperationTreeVerifier.GetOperationTree(compilation, firstBlockOper);
 
+            //todo: SemanticModel.GetControlFlowGraph(IOperation rootOperation)
             var cfg = SemanticModel.GetControlFlowGraph(firstBlockOper);
 
             //TODO: #ifdef ROSLYN-LOCAL
